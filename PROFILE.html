@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سیستەمی بەڕێوەبردنی ماڕکێت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, var(--primary-color), #1a5276);
+            color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 16px 10px;
+            border: none;
+            background-color: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(to bottom, var(--secondary-color), #2980b9);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .form-card {
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.95rem;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        
+        input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--secondary-color), #2980b9);
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, var(--success-color), #219653);
+            color: white;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-success:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-export {
+            background: linear-gradient(to right, var(--primary-color), #34495e);
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+            padding: 12px 20px;
+            width: auto;
+            margin-top: 0;
+        }
+        
+        .btn-export:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(44, 62, 80, 0.3);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: right;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 70px;
+            justify-content: center;
+        }
+        
+        .edit-btn {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .save-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .total-card {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 18px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .total-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .total-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state .hint {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .data-info {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--secondary-color);
+            font-size: 0.95rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .notification.success {
+            background: rgba(39, 174, 96, 0.95);
+            border-left: 5px solid #1e8449;
+        }
+        
+        .notification.error {
+            background: rgba(231, 76, 60, 0.95);
+            border-left: 5px solid #c0392b;
+        }
+        
+        .notification.info {
+            background: rgba(52, 152, 219, 0.95);
+            border-left: 5px solid #2980b9;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            header {
+                padding: 18px 12px;
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .tab-btn {
+                padding: 14px 8px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-btn i {
+                font-size: 1.1rem;
+            }
+            
+            .tab-content {
+                padding: 18px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .btn-export {
+                width: 100%;
+            }
+            
+            .form-card {
+                padding: 18px;
+            }
+            
+            input {
+                padding: 16px 45px 16px 15px;
+            }
+            
+            .action-btn {
+                min-width: 60px;
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .total-card {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .notification {
+                right: 12px;
+                left: 12px;
+                top: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .action-btn {
+                width: 100%;
+            }
+        }
+        
+        /* iPad optimizations */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+            }
+            
+            .actions {
+                flex-wrap: nowrap;
+            }
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-store"></i> سیستەمی بەڕێوەبردنی ماڕکێت</h1>
+            <p class="subtitle">بەشی کاڵاکان و تۆمارکردنی قەرزەکان</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="products-tab">
+                <i class="fas fa-boxes"></i>
+                <span>کاڵاکان</span>
+            </button>
+            <button class="tab-btn" data-tab="debts-tab">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>قەرزەکان</span>
+            </button>
+        </div>
+        
+        <!-- بەشی کاڵاکان -->
+        <div id="products-tab" class="tab-content active">
+            <div class="data-info">
+                <i class="fas fa-info-circle"></i> ئەم بەشە بۆ هەڵگرتنی ناو و نرخی کاڵاکانە. دەتوانیت کاڵای نوێ زیاد بکەیت، دەستکاری بکەیت یان بسڕیتەوە.
+            </div>
+            
+            <div class="form-card">
+                <div class="section-title">
+                    <span>زیادکردنی کاڵای نوێ</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-name"><i class="fas fa-tag"></i> ناوی کاڵا</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-box"></i>
+                        <input type="text" id="product-name" placeholder="ناوی کاڵا...">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-price"><i class="fas fa-money-bill-wave"></i> نرخی کاڵا (دینار)</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                        <input type="number" id="product-price" placeholder="نرخی کاڵا...">
+                    </div>
+                </div>
+                
+                <button id="add-product-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> زیادکردنی کاڵا
+                </button>
+            </div>
+            
+            <div class="section-title">
+                <span>لیستی کاڵاکان</span>
+                <button id="export-products-btn" class="btn btn-export">
+                    <i class="fas fa-file-pdf"></i> هەڵگرتنی بە PDF
+                </button>
+            </div>
+            
+            <div id="products-container">
+                <div class="table-container">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ناوی کاڵا</th>
+                                <th>نرخ (دینار)</th>
+                                <th>کردارەکان</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-list">
+                            <!-- کاڵاکان لێرە زیاد دەکرێن -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="products-empty" class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>هیچ کاڵایەک تۆمار نەکراوە</p>
+                    <p class="hint">یەکەم کاڵا لە فۆرمەکەی سەرەوە زیاد بکە</p>
+                </div>
+                
+                <div class="total-card" id="products-total">
+                    <div class="total-text">کۆی گشتی کاڵاکان:</div>
+                    <div class="total-value">0 کاڵا</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- بەشی قەرزەکان -->
+        <div id="debts-tab" class="tab-content">
+            <div class="data-info">
+                <i class="fas fa-info-circle"></i> ئەم بەشە بۆ تۆمارکردنی قەرزەکانە. دەتوانیت ناو، نرخی قەرز و ژمارە مۆبایل تۆمار بکەیت و دواتر دەستکاری بکەیت.
+            </div>
+            
+            <div class="form-card">
+                <div class="section-title">
+                    <span>زیادکردنی قەرزی نوێ</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="debtor-name"><i class="fas fa-user"></i> ناوی قەرزدار</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="text" id="debtor-name" placeholder="ناوی قەرزدار...">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="debt-amount"><i class="fas fa-money-bill-wave"></i> بڕی قەرز (دینار)</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-coins"></i>
+                        <input type="number" id="debt-amount" placeholder="بڕی قەرز...">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="debtor-phone"><i class="fas fa-phone"></i> ژمارە مۆبایل (ئارەزومەندانە)</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                        <input type="tel" id="debtor-phone" placeholder="ژمارە مۆبایل...">
+                    </div>
+                </div>
+                
+                <button id="add-debt-btn" class="btn btn-success">
+                    <i class="fas fa-plus"></i> زیادکردنی قەرز
+                </button>
+            </div>
+            
+            <div class="section-title">
+                <span>لیستی قەرزەکان</span>
+                <button id="export-debts-btn" class="btn btn-export">
+                    <i class="fas fa-file-pdf"></i> هەڵگرتنی بە PDF
+                </button>
+            </div>
+            
+            <div id="debts-container">
+                <div class="table-container">
+                    <table id="debts-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ناوی قەرزدار</th>
+                                <th>بڕی قەرز (دینار)</th>
+                                <th>ژمارە مۆبایل</th>
+                                <th>بەروار</th>
+                                <th>کردارەکان</th>
+                            </tr>
+                        </thead>
+                        <tbody id="debts-list">
+                            <!-- قەرزەکان لێرە زیاد دەکرێن -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="debts-empty" class="empty-state">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <p>هیچ قەرزێک تۆمار نەکراوە</p>
+                    <p class="hint">یەکەم قەرز لە فۆرمەکەی سەرەوە زیاد بکە</p>
+                </div>
+                
+                <div class="total-card" id="debts-total">
+                    <div class="total-text">کۆی گشتی قەرزەکان:</div>
+                    <div class="total-value">0 دینار</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        // بارکردنی داتاکان لە localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            loadDebts();
+            setupEventListeners();
+            updateProductsTotal();
+            updateDebtsTotal();
+            checkInitialData();
+        });
+        
+        // دەستکاری Tab-ەکان
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+                
+                // هەڵبژاردنی تابی نوێ
+                showNotification(`بەشی "${btn.querySelector('span').textContent}" هەڵبژێردرا`, 'info');
+            });
+        });
+        
+        // بارکردن و هەڵگرتنی کاڵاکان
+        let products = [];
+        let editingProductId = null;
+        let originalProductData = null;
+        
+        function loadProducts() {
+            const savedProducts = localStorage.getItem('marketProducts');
+            if (savedProducts) {
+                try {
+                    products = JSON.parse(savedProducts);
+                    renderProducts();
+                } catch (e) {
+                    console.error('هەڵە لە خوێندنەوەی کاڵاکان:', e);
+                    products = [];
+                }
+            }
+        }
+        
+        function saveProducts() {
+            localStorage.setItem('marketProducts', JSON.stringify(products));
+        }
+        
+        function renderProducts() {
+            const productsList = document.getElementById('products-list');
+            productsList.innerHTML = '';
+            
+            if (products.length === 0) {
+                document.getElementById('products-empty').style.display = 'block';
+                document.getElementById('products-table').style.display = 'none';
+                document.getElementById('products-total').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('products-empty').style.display = 'none';
+            document.getElementById('products-table').style.display = 'table';
+            document.getElementById('products-total').style.display = 'flex';
+            
+            products.forEach((product, index) => {
+                const row = document.createElement('tr');
+                const isEditing = editingProductId === product.id;
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${product.name}</td>
+                    <td>${formatCurrency(product.price)}</td>
+                    <td>
+                        <div class="actions">
+                            ${isEditing ? 
+                                `<button class="action-btn save-btn" onclick="saveProductEdit('${product.id}')">
+                                    <i class="fas fa-save"></i> پاشەکەوت
+                                </button>
+                                <button class="action-btn cancel-btn" onclick="cancelProductEdit()">
+                                    <i class="fas fa-times"></i> هەڵوەشاندن
+                                </button>` :
+                                `<button class="action-btn edit-btn" onclick="editProduct('${product.id}')">
+                                    <i class="fas fa-edit"></i> دەستکاری
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteProduct('${product.id}')">
+                                    <i class="fas fa-trash"></i> سڕینەوە
+                                </button>`
+                            }
+                        </div>
+                    </td>
+                `;
+                productsList.appendChild(row);
+            });
+            
+            updateProductsTotal();
+        }
+        
+        function addProduct() {
+            const nameInput = document.getElementById('product-name');
+            const priceInput = document.getElementById('product-price');
+            
+            const name = nameInput.value.trim();
+            const price = parseFloat(priceInput.value);
+            
+            if (!name) {
+                showNotification('تکایە ناوی کاڵا بنووسە', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (isNaN(price) || price <= 0) {
+                showNotification('تکایە نرخی دروستی کاڵا بنووسە', 'error');
+                priceInput.focus();
+                return;
+            }
+            
+            // پشکنین بۆ ئەوەی کاڵای هاوشێوە بوونی نییە
+            const duplicate = products.find(p => p.name.toLowerCase() === name.toLowerCase());
+            if (duplicate) {
+                showNotification('ئەم کاڵایە پێشتر تۆمار کراوە', 'error');
+                return;
+            }
+            
+            const product = {
+                id: generateId(),
+                name: name,
+                price: price,
+                createdAt: new Date().toISOString()
+            };
+            
+            products.push(product);
+            saveProducts();
+            renderProducts();
+            
+            nameInput.value = '';
+            priceInput.value = '';
+            nameInput.focus();
+            
+            showNotification(`کاڵای "${name}" بە سەرکەوتوویی زیاد کرا`, 'success');
+        }
+        
+        function editProduct(id) {
+            if (editingProductId) {
+                showNotification('پێش دەستکاریکردنی تر تەواو بکە', 'error');
+                return;
+            }
+            
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            const nameInput = document.getElementById('product-name');
+            const priceInput = document.getElementById('product-price');
+            
+            // پاشەکەوتکردنی زانیاریە ڕاستەقینەکان
+            originalProductData = {
+                name: nameInput.value,
+                price: priceInput.value
+            };
+            
+            nameInput.value = product.name;
+            priceInput.value = product.price;
+            
+            editingProductId = id;
+            renderProducts();
+            
+            showNotification('ئێستا دەتوانیت کاڵاکە دەستکاری بکەیت', 'info');
+            nameInput.focus();
+        }
+        
+        function saveProductEdit(id) {
+            const nameInput = document.getElementById('product-name');
+            const priceInput = document.getElementById('product-price');
+            
+            const name = nameInput.value.trim();
+            const price = parseFloat(priceInput.value);
+            
+            if (!name) {
+                showNotification('تکایە ناوی کاڵا بنووسە', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (isNaN(price) || price <= 0) {
+                showNotification('تکایە نرخی دروستی کاڵا بنووسە', 'error');
+                priceInput.focus();
+                return;
+            }
+            
+            const productIndex = products.findIndex(p => p.id === id);
+            if (productIndex !== -1) {
+                // پشکنین بۆ ئەوەی کاڵای هاوشێوە بوونی نییە (جگە لە خۆی)
+                const duplicate = products.find((p, index) => 
+                    index !== productIndex && p.name.toLowerCase() === name.toLowerCase()
+                );
+                
+                if (duplicate) {
+                    showNotification('ئەم کاڵایە پێشتر تۆمار کراوە', 'error');
+                    return;
+                }
+                
+                products[productIndex].name = name;
+                products[productIndex].price = price;
+                products[productIndex].updatedAt = new Date().toISOString();
+                
+                saveProducts();
+                editingProductId = null;
+                originalProductData = null;
+                renderProducts();
+                
+                nameInput.value = '';
+                priceInput.value = '';
+                
+                showNotification(`کاڵاکە بە سەرکەوتوویی دەستکاری کرا`, 'success');
+            }
+        }
+        
+        function cancelProductEdit() {
+            const nameInput = document.getElementById('product-name');
+            const priceInput = document.getElementById('product-price');
+            
+            // گەڕاندنەوەی زانیاریە ڕاستەقینەکان
+            if (originalProductData) {
+                nameInput.value = originalProductData.name;
+                priceInput.value = originalProductData.price;
+            } else {
+                nameInput.value = '';
+                priceInput.value = '';
+            }
+            
+            editingProductId = null;
+            originalProductData = null;
+            renderProducts();
+            
+            showNotification('دەستکاری هەڵوەشێنرایەوە', 'info');
+        }
+        
+        function deleteProduct(id) {
+            if (!confirm('ئایا دڵنیایی کە دەتەوێت ئەم کاڵایە بسڕیتەوە؟')) {
+                return;
+            }
+            
+            const productIndex = products.findIndex(p => p.id === id);
+            if (productIndex === -1) return;
+            
+            const productName = products[productIndex].name;
+            products.splice(productIndex, 1);
+            saveProducts();
+            renderProducts();
+            
+            showNotification(`کاڵای "${productName}" سڕدرایەوە`, 'success');
+        }
+        
+        function updateProductsTotal() {
+            const totalElement = document.getElementById('products-total');
+            const totalProducts = products.length;
+            const totalValue = products.reduce((sum, product) => sum + product.price, 0);
+            
+            totalElement.innerHTML = `
+                <div class="total-text">کۆی گشتی کاڵاکان:</div>
+                <div class="total-value">${totalProducts} کاڵا (${formatCurrency(totalValue)})</div>
+            `;
+        }
+        
+        // بارکردن و هەڵگرتنی قەرزەکان
+        let debts = [];
+        let editingDebtId = null;
+        let originalDebtData = null;
+        
+        function loadDebts() {
+            const savedDebts = localStorage.getItem('marketDebts');
+            if (savedDebts) {
+                try {
+                    debts = JSON.parse(savedDebts);
+                    renderDebts();
+                } catch (e) {
+                    console.error('هەڵە لە خوێندنەوەی قەرزەکان:', e);
+                    debts = [];
+                }
+            }
+        }
+        
+        function saveDebts() {
+            localStorage.setItem('marketDebts', JSON.stringify(debts));
+        }
+        
+        function renderDebts() {
+            const debtsList = document.getElementById('debts-list');
+            debtsList.innerHTML = '';
+            
+            if (debts.length === 0) {
+                document.getElementById('debts-empty').style.display = 'block';
+                document.getElementById('debts-table').style.display = 'none';
+                document.getElementById('debts-total').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('debts-empty').style.display = 'none';
+            document.getElementById('debts-table').style.display = 'table';
+            document.getElementById('debts-total').style.display = 'flex';
+            
+            debts.forEach((debt, index) => {
+                const row = document.createElement('tr');
+                const isEditing = editingDebtId === debt.id;
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${debt.name}</td>
+                    <td>${formatCurrency(debt.amount)}</td>
+                    <td>${debt.phone || '-'}</td>
+                    <td>${formatDate(debt.date)}</td>
+                    <td>
+                        <div class="actions">
+                            ${isEditing ? 
+                                `<button class="action-btn save-btn" onclick="saveDebtEdit('${debt.id}')">
+                                    <i class="fas fa-save"></i> پاشەکەوت
+                                </button>
+                                <button class="action-btn cancel-btn" onclick="cancelDebtEdit()">
+                                    <i class="fas fa-times"></i> هەڵوەشاندن
+                                </button>` :
+                                `<button class="action-btn edit-btn" onclick="editDebt('${debt.id}')">
+                                    <i class="fas fa-edit"></i> دەستکاری
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteDebt('${debt.id}')">
+                                    <i class="fas fa-trash"></i> سڕینەوە
+                                </button>`
+                            }
+                        </div>
+                    </td>
+                `;
+                debtsList.appendChild(row);
+            });
+            
+            updateDebtsTotal();
+        }
+        
+        function addDebt() {
+            const nameInput = document.getElementById('debtor-name');
+            const amountInput = document.getElementById('debt-amount');
+            const phoneInput = document.getElementById('debtor-phone');
+            
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+            const phone = phoneInput.value.trim();
+            
+            if (!name) {
+                showNotification('تکایە ناوی قەرزدار بنووسە', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                showNotification('تکایە بڕی دروستی قەرز بنووسە', 'error');
+                amountInput.focus();
+                return;
+            }
+            
+            const debt = {
+                id: generateId(),
+                name: name,
+                amount: amount,
+                phone: phone,
+                date: getCurrentDate(),
+                createdAt: new Date().toISOString()
+            };
+            
+            debts.push(debt);
+            saveDebts();
+            renderDebts();
+            
+            nameInput.value = '';
+            amountInput.value = '';
+            phoneInput.value = '';
+            nameInput.focus();
+            
+            showNotification(`قەرزی "${name}" بە سەرکەوتوویی زیاد کرا`, 'success');
+        }
+        
+        function editDebt(id) {
+            if (editingDebtId) {
+                showNotification('پێش دەستکاریکردنی تر تەواو بکە', 'error');
+                return;
+            }
+            
+            const debt = debts.find(d => d.id === id);
+            if (!debt) return;
+            
+            const nameInput = document.getElementById('debtor-name');
+            const amountInput = document.getElementById('debt-amount');
+            const phoneInput = document.getElementById('debtor-phone');
+            
+            // پاشەکەوتکردنی زانیاریە ڕاستەقینەکان
+            originalDebtData = {
+                name: nameInput.value,
+                amount: amountInput.value,
+                phone: phoneInput.value
+            };
+            
+            nameInput.value = debt.name;
+            amountInput.value = debt.amount;
+            phoneInput.value = debt.phone || '';
+            
+            editingDebtId = id;
+            renderDebts();
+            
+            showNotification('ئێستا دەتوانیت قەرزەکە دەستکاری بکەیت', 'info');
+            nameInput.focus();
+        }
+        
+        function saveDebtEdit(id) {
+            const nameInput = document.getElementById('debtor-name');
+            const amountInput = document.getElementById('debt-amount');
+            const phoneInput = document.getElementById('debtor-phone');
+            
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+            const phone = phoneInput.value.trim();
+            
+            if (!name) {
+                showNotification('تکایە ناوی قەرزدار بنووسە', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                showNotification('تکایە بڕی دروستی قەرز بنووسە', 'error');
+                amountInput.focus();
+                return;
+            }
+            
+            const debtIndex = debts.findIndex(d => d.id === id);
+            if (debtIndex !== -1) {
+                debts[debtIndex].name = name;
+                debts[debtIndex].amount = amount;
+                debts[debtIndex].phone = phone;
+                debts[debtIndex].updatedAt = new Date().toISOString();
+                
+                saveDebts();
+                editingDebtId = null;
+                originalDebtData = null;
+                renderDebts();
+                
+                nameInput.value = '';
+                amountInput.value = '';
+                phoneInput.value = '';
+                
+                showNotification(`قەرزەکە بە سەرکەوتوویی دەستکاری کرا`, 'success');
+            }
+        }
+        
+        function cancelDebtEdit() {
+            const nameInput = document.getElementById('debtor-name');
+            const amountInput = document.getElementById('debt-amount');
+            const phoneInput = document.getElementById('debtor-phone');
+            
+            // گەڕاندنەوەی زانیاریە ڕاستەقینەکان
+            if (originalDebtData) {
+                nameInput.value = originalDebtData.name;
+                amountInput.value = originalDebtData.amount;
+                phoneInput.value = originalDebtData.phone;
+            } else {
+                nameInput.value = '';
+                amountInput.value = '';
+                phoneInput.value = '';
+            }
+            
+            editingDebtId = null;
+            originalDebtData = null;
+            renderDebts();
+            
+            showNotification('دەستکاری هەڵوەشێنرایەوە', 'info');
+        }
+        
+        function deleteDebt(id) {
+            if (!confirm('ئایا دڵنیایی کە دەتەوێت ئەم قەرزە بسڕیتەوە؟')) {
+                return;
+            }
+            
+            const debtIndex = debts.findIndex(d => d.id === id);
+            if (debtIndex === -1) return;
+            
+            const debtorName = debts[debtIndex].name;
+            debts.splice(debtIndex, 1);
+            saveDebts();
+            renderDebts();
+            
+            showNotification(`قەرزی "${debtorName}" سڕدرایەوە`, 'success');
+        }
+        
+        function updateDebtsTotal() {
+            const totalElement = document.getElementById('debts-total');
+            const totalDebts = debts.length;
+            const totalAmount = debts.reduce((sum, debt) => sum + debt.amount, 0);
+            
+            totalElement.innerHTML = `
+                <div class="total-text">کۆی گشتی قەرزەکان:</div>
+                <div class="total-value">${formatCurrency(totalAmount)} (${totalDebts} کەس)</div>
+            `;
+        }
+        
+        // PDF Export Functions - وەشانی چاککراو
+        function exportProductsToPDF() {
+            if (products.length === 0) {
+                showNotification('هیچ کاڵایەک نییە بۆ هەڵگرتن', 'error');
+                return;
+            }
+            
+            showNotification('لە هەڵگرتنی PDF دا...', 'info');
+            
+            // دروستکردنی PDF بە شێوەیەکی سەرەکی
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+                putOnlyUsedFonts: true,
+                floatPrecision: 16
+            });
+            
+            // ناونیشان
+            doc.setFontSize(20);
+            doc.setTextColor(44, 62, 80);
+            doc.text('ڕاپۆرتی کاڵاکانی ماڕکێت', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`بەرواری هەڵگرتن: ${getCurrentDate()}`, 105, 30, { align: 'center' });
+            
+            // زانیاری کۆی گشتی
+            const totalProducts = products.length;
+            const totalValue = products.reduce((sum, product) => sum + product.price, 0);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`کۆی گشتی کاڵاکان: ${totalProducts}`, 20, 45);
+            doc.text(`کۆی نرخی کاڵاکان: ${formatCurrency(totalValue)} دینار`, 20, 52);
+            
+            // داتای خشتە
+            const tableData = products.map((product, index) => [
+                index + 1,
+                product.name,
+                formatCurrency(product.price) + ' دینار'
+            ]);
+            
+            // دروستکردنی خشتە
+            doc.autoTable({
+                head: [['#', 'ناوی کاڵا', 'نرخ']],
+                body: tableData,
+                startY: 60,
+                margin: { left: 20, right: 20 },
+                styles: { 
+                    font: 'helvetica',
+                    fontSize: 10,
+                    cellPadding: 5,
+                    textColor: [0, 0, 0],
+                    halign: 'right'
+                },
+                headStyles: { 
+                    fillColor: [44, 62, 80],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                alternateRowStyles: { fillColor: [245, 245, 245] },
+                theme: 'grid'
+            });
+            
+            // پاشەکەوتی فایلەکە
+            const finalY = doc.autoTable.previous.finalY || 60;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('بە سەرکەوتوویی هەڵگیرا لە سیستەمی بەڕێوەبردنی ماڕکێت', 105, finalY + 20, { align: 'center' });
+            
+            // هەڵگرتن
+            try {
+                doc.save(`کاڵاکانی_ماڕکێت_${getCurrentDate(true)}.pdf`);
+                showNotification('ڕاپۆرتی کاڵاکان بە سەرکەوتوویی هەڵگیرا', 'success');
+            } catch (error) {
+                console.error('هەڵە لە هەڵگرتنی PDF:', error);
+                showNotification('هەڵە لە هەڵگرتنی PDF', 'error');
+            }
+        }
+        
+        function exportDebtsToPDF() {
+            if (debts.length === 0) {
+                showNotification('هیچ قەرزێک نییە بۆ هەڵگرتن', 'error');
+                return;
+            }
+            
+            showNotification('لە هەڵگرتنی PDF دا...', 'info');
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+                putOnlyUsedFonts: true,
+                floatPrecision: 16
+            });
+            
+            // ناونیشان
+            doc.setFontSize(20);
+            doc.setTextColor(44, 62, 80);
+            doc.text('ڕاپۆرتی قەرزەکانی ماڕکێت', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`بەرواری هەڵگرتن: ${getCurrentDate()}`, 105, 30, { align: 'center' });
+            
+            // زانیاری کۆی گشتی
+            const totalDebts = debts.length;
+            const totalAmount = debts.reduce((sum, debt) => sum + debt.amount, 0);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`کۆی گشتی قەرزەکان: ${totalDebts} کەس`, 20, 45);
+            doc.text(`کۆی بڕی قەرزەکان: ${formatCurrency(totalAmount)} دینار`, 20, 52);
+            
+            // داتای خشتە
+            const tableData = debts.map((debt, index) => [
+                index + 1,
+                debt.name,
+                formatCurrency(debt.amount) + ' دینار',
+                debt.phone || '-',
+                debt.date
+            ]);
+            
+            // دروستکردنی خشتە
+            doc.autoTable({
+                head: [['#', 'ناوی قەرزدار', 'بڕی قەرز', 'ژمارە مۆبایل', 'بەروار']],
+                body: tableData,
+                startY: 60,
+                margin: { left: 15, right: 15 },
+                styles: { 
+                    font: 'helvetica',
+                    fontSize: 9,
+                    cellPadding: 4,
+                    textColor: [0, 0, 0],
+                    halign: 'right'
+                },
+                headStyles: { 
+                    fillColor: [44, 62, 80],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                columnStyles: {
+                    0: { cellWidth: 15 },
+                    1: { cellWidth: 40 },
+                    2: { cellWidth: 35 },
+                    3: { cellWidth: 40 },
+                    4: { cellWidth: 30 }
+                },
+                alternateRowStyles: { fillColor: [245, 245, 245] },
+                theme: 'grid'
+            });
+            
+            // پاشەکەوتی فایلەکە
+            const finalY = doc.autoTable.previous.finalY || 60;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('بە سەرکەوتوویی هەڵگیرا لە سیستەمی بەڕێوەبردنی ماڕکێت', 105, finalY + 20, { align: 'center' });
+            
+            // هەڵگرتن
+            try {
+                doc.save(`قەرزەکانی_ماڕکێت_${getCurrentDate(true)}.pdf`);
+                showNotification('ڕاپۆرتی قەرزەکان بە سەرکەوتوویی هەڵگیرا', 'success');
+            } catch (error) {
+                console.error('هەڵە لە هەڵگرتنی PDF:', error);
+                showNotification('هەڵە لە هەڵگرتنی PDF', 'error');
+            }
+        }
+        
+        // Helper Functions
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        function getCurrentDate(forFileName = false) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            
+            if (forFileName) {
+                return `${year}-${month}-${day}`;
+            }
+            
+            return `${year}/${month}/${day}`;
+        }
+        
+        function formatDate(dateStr) {
+            return dateStr; // بە هیوای ئەوەی فۆرماتی YYYY/MM/DD بێت
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ar-IQ').format(amount);
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        function checkInitialData() {
+            if (products.length === 0 && debts.length === 0) {
+                // زانیاریەکی نموونەیی زیاد دەکەین بۆ نیشاندان
+                const sampleProduct = {
+                    id: generateId(),
+                    name: 'شیر',
+                    price: 1500,
+                    createdAt: new Date().toISOString()
+                };
+                
+                const sampleDebt = {
+                    id: generateId(),
+                    name: 'عەلی',
+                    amount: 25000,
+                    phone: '07501234567',
+                    date: getCurrentDate(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                products.push(sampleProduct);
+                debts.push(sampleDebt);
+                
+                saveProducts();
+                saveDebts();
+                renderProducts();
+                renderDebts();
+                
+                showNotification('زانیاریەکی نموونەیی بۆ نیشاندان زیاد کرا', 'info');
+            }
+        }
+        
+        function setupEventListeners() {
+            // Products
+            document.getElementById('add-product-btn').addEventListener('click', addProduct);
+            document.getElementById('export-products-btn').addEventListener('click', exportProductsToPDF);
+            
+            // Allow adding product with Enter key
+            document.getElementById('product-price').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') addProduct();
+            });
+            
+            // Debts
+            document.getElementById('add-debt-btn').addEventListener('click', addDebt);
+            document.getElementById('export-debts-btn').addEventListener('click', exportDebtsToPDF);
+            
+            // Allow adding debt with Enter key
+            const debtInputs = ['debtor-name', 'debt-amount', 'debtor-phone'];
+            debtInputs.forEach(id => {
+                document.getElementById(id).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') addDebt();
+                });
+            });
+            
+            // Auto-save confirmation
+            window.addEventListener('beforeunload', function(e) {
+                // داتاکان خۆکارانە لە localStorage پاشەکەوت دەکرێن
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+P for products export
+                if (e.ctrlKey && e.key === 'p') {
+                    e.preventDefault();
+                    exportProductsToPDF();
+                }
+                
+                // Ctrl+D for debts export
+                if (e.ctrlKey && e.key === 'd') {
+                    e.preventDefault();
+                    exportDebtsToPDF();
+                }
+            });
+            
+            // Mobile touch improvements
+            document.querySelectorAll('input, button').forEach(el => {
+                el.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                el.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
